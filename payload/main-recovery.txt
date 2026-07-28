@@ -1,0 +1,37 @@
+
+
+        // --== Overlay re-anchoring on display / power changes ==--------------------
+        // NAG's spanning renderer collapses onto the primary display when a monitor
+        // drops out (monitor sleep, or the whole PC sleeping on a multi-monitor rig).
+        // Windows re-enumerates displays over 1-3s on wake, so we (a) coalesce the
+        // bursty display events and (b) re-check several times after resume, once the
+        // topology has settled. checkOverlayPositions( false ) => recover silently,
+        // no warning dialog on every wake.
+        let overlayRecheckTimers = [];
+        const reanchorOverlays = ( reason ) => {
+            if ( userPreferences.enableCheckWindowPosition !== true ) { return; }
+            log.info( `[main:reanchorOverlays] Re-anchoring overlays. reason=${reason}` );
+            try {
+                winManager.checkOverlayPositions( false );
+            } catch ( err ) {
+                log.error( '[main:reanchorOverlays] Failed to re-anchor overlays.', err );
+            }
+        };
+        const scheduleOverlayRecheck = ( reason, delays ) => {
+            overlayRecheckTimers.forEach( t => clearTimeout( t ) );
+            overlayRecheckTimers = delays.map( ms => setTimeout( () => reanchorOverlays( `${reason}+${ms}ms` ), ms ) );
+        };
+
+        // Scenario A: a monitor powers down/up. These may fire in a burst mid-transition.
+        screen.on( 'display-metrics-changed', ( e, newDisplay ) => {
+            log.info( '[main:display-metrics-changed] Scheduling overlay position checks.', newDisplay?.id );
+            scheduleOverlayRecheck( 'display-metrics-changed', [ 750, 3000 ] );
+        } );
+        screen.on( 'display-added', () => scheduleOverlayRecheck( 'display-added', [ 750, 3000 ] ) );
+        screen.on( 'display-removed', () => scheduleOverlayRecheck( 'display-removed', [ 750, 3000 ] ) );
+
+        // Scenario B: the whole PC sleeps (S3 / Modern Standby) or the session locks.
+        // These do NOT emit a reliable display-metrics-changed, so drive the recovery
+        // from powerMonitor and stagger passes while geometry stabilizes after wake.
+        powerMonitor.on( 'resume', () => scheduleOverlayRecheck( 'resume', [ 1500, 4000, 8000 ] ) );
+        powerMonitor.on( 'unlock-screen', () => scheduleOverlayRecheck( 'unlock-screen', [ 1500, 4000, 8000 ] ) );

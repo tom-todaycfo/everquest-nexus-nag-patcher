@@ -1,0 +1,7 @@
+# Every file here ships to users exactly as committed, and the whole promise of
+# this repo is that what you read is what runs. Git's end-of-line normalization
+# would rewrite bytes on checkout, so it is turned off for everything.
+#
+# This machine has core.autocrlf=true globally, which is why the rule has to be
+# explicit rather than assumed.
+* -text

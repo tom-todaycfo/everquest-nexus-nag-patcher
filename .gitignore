@@ -1,0 +1,6 @@
+# Build output from scripts/pack.ps1.
+/dist/
+
+# NOTE: lib/node_modules/ is committed on purpose. It is the copy of the "asar"
+# tool the patcher runs with, and shipping it is what lets the patch work on a
+# machine with no Node.js installed. Do not add node_modules to this file.
