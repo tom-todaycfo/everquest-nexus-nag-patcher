@@ -72,6 +72,10 @@ edit and the reason for it together. The one long insertion lives in
 Nothing is deleted, and nothing outside your NAG folder is touched. There is no network access
 anywhere in the patcher.
 
+[`docs/how-it-works.md`](docs/how-it-works.md) goes through each patch in detail: why the overlay
+re-shows without taking focus, why display recovery fires on a stagger instead of once, and the
+Windows and Electron problems that shaped the installer.
+
 ## Compatibility
 
 Built and tested against **EQ NAG 0.2.22** on Windows, which installs itself as
