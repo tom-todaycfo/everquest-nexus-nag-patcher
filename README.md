@@ -7,8 +7,9 @@ This is the full source of the patch offered on
 It is public so you can read every line before you run it. Nothing here is compiled, packed, or
 hidden. The `.bat`, `.ps1`, `.js`, and `.txt` files are the whole thing.
 
-**NAG is not mine.** All credit for it goes to its own author. This patch only edits the copy of
-NAG already installed on your computer, and it does not include any part of NAG itself.
+**NAG is not mine.** It is [guildantix/eq-nag](https://github.com/guildantix/eq-nag), and all
+credit for it goes to its author. This patch only edits the copy of NAG already installed on your
+computer, and it does not include or redistribute any part of NAG itself.
 
 ## What it does
 
@@ -73,9 +74,12 @@ anywhere in the patcher.
 
 ## Compatibility
 
-Built and tested against **EQ NAG 0.2.22** on Windows. Any other version either patches cleanly or
-is refused outright, because the anchors have to match exactly. There is no middle case where it
-half-applies.
+Built and tested against **EQ NAG 0.2.22** on Windows, which installs itself as
+`electron-angular-eq-parse` under `%LOCALAPPDATA%\Programs`. That folder name is what the installer
+searches for, so it is worth knowing if it ever fails to find your install.
+
+Any other version either patches cleanly or is refused outright, because the anchors have to match
+exactly. There is no middle case where it half-applies.
 
 If NAG ships an official update it will overwrite the patch. Run the installer again afterward.
 

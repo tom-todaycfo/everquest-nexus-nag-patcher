@@ -25,9 +25,9 @@ SOFTWARE.
 
 This license covers the patch in this repository only.
 
-It does not cover EQ NAG, which is the work of its own author and is not
-included or redistributed here. The patch edits a copy of NAG already installed
-on the user's own machine.
+It does not cover EQ NAG (https://github.com/guildantix/eq-nag), which is the
+work of its own author and is not included or redistributed here. The patch
+edits a copy of NAG already installed on the user's own machine.
 
 It does not cover the vendored "asar" tool and its dependencies under lib/,
 which carry their own MIT licenses, included alongside them.
